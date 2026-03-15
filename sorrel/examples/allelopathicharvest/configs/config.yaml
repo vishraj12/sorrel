@@ -1,0 +1,60 @@
+experiment:
+  name: allelopathic_harvest
+  epochs: 5  # Just 5 epochs for testing
+  max_turns: 50  # Just 50 steps per episode
+  epsilon_decay: 0.0001
+  record_period: 1  # Record EVERY epoch to test animation
+
+world:
+  height: 31  # 29 playable + 2 for walls
+  width: 32   # 30 playable + 2 for walls
+  layers: 3
+  default_object: EmptyEntity
+  full_mdp: False  # Partial observability
+  mode: DEFAULT
+  
+  # Berry parameters
+  total_berries: 348
+  allelopathic_constant: 0.000005  # 5e-6 (ripening rate)
+  
+  # Player preferences (16 total agents)
+  red_preference_count: 2
+  green_preference_count: 2
+  blue_preference_count: 0
+  
+  # Rewards
+  preferred_berry_reward: 2  # Reward for preferred color
+  other_berry_reward: 1      # Reward for other colors
+
+model:
+  iqn:
+    type: iRainbowModel
+    parameters:
+      layer_size: 250
+      n_step: 3
+      batch_size: 64
+      memory_size: 1024
+      LR: 0.00025
+      TAU: .001
+      GAMMA: 0.99
+      n_quantiles: 12
+      sync_freq: 200
+      model_update_freq: 4
+      epsilon: 0.8
+      device: cpu
+  epsilon_decay: 0.0001
+
+agent:
+  agent:
+    num: 4  # e.g. 8 red + 8 green for paper; use 4 for testing
+    model: iqn
+    beam_radius: 1  # Planting beam affects cell in front
+    rotation: True  # Agents have orientation
+    obs:
+      channels: 10  # EmptyEntity, Wall, 6 berry kinds (color+ripe), Agent, PlantingBeam
+      vision: 5    # 11x11 vision window (2*5+1); paper uses partial observability
+      n_frames: 5  # Number of frames to stack
+      embeddings: 3  # Embedding size
+
+root: '~/Documents/GitHub/sorrel'
+log: False
