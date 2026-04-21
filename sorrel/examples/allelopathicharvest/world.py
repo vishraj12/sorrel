@@ -15,7 +15,7 @@ class AllelopathicHarvestWorld(Gridworld):
         self.config = config  # figure this out
         self.object_layer = 0  # base layer w/ the berries
         self.agent_layer = 1  # agents
-        self.beam_layer = 2  # beaming (implement later)
+        self.beam_layer = 2  # beaming
         layers = 3
         super().__init__(
             config.world.height, config.world.width, layers, default_entity

@@ -61,15 +61,14 @@ class Berry(Entity[AllelopathicHarvestWorld]):
         self.ripe = ripe
         self.consumable = ripe
         self.plantable = not ripe
-        self.passable = True  # Agents can ALWAYS walk over berries
-        self.has_transitions = True  # Berries ripen over time
+        self.passable = True  # agents can ALWAYS walk over berries
+        self.has_transitions = True  # berries ripen over time
         self.kind = self._berry_kind()
 
-        # Sprite
         self.sprite = Path(__file__).parent / f"./assets/{color}_berry.png"
 
     def _berry_kind(self) -> str:
-        """Kind string for one-hot observation (must match ENTITY_LIST in env)."""
+        """Kind string for one-hot observation."""
         return f"Berry_{self.color}_{'ripe' if self.ripe else 'unripe'}"
 
     def transition(self, world: AllelopathicHarvestWorld):
